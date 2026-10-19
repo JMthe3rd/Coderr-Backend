@@ -1,0 +1,1090 @@
+[
+  {
+    "title": "Authentication",
+    "description": "Login und Registrierung",
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/registration/",
+        "description": "Erstellt einen neuen Benutzer. Dieser Benutzer kann entweder ein Customer- oder Business-User sein.",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "",
+        "requestBody": {
+          "username": "exampleUsername",
+          "email": "example@mail.de",
+          "password": "examplePassword",
+          "repeated_password": "examplePassword",
+          "type": "customer"
+        },
+        "responseDescr": "Erfolgreicher Erstellung gibt dies ein Token sowie die Benutzerinformationen zurück, inklusive die einzigartige Nutzer-ID.",
+        "response": {
+          "token": "83bf098723b08f7b23429u0fv8274",
+          "username": "exampleUsername",
+          "email": "example@mail.de",
+          "user_id": 123
+        },
+        "statusCodes": {
+          "201": "Der Benutzer wurde erfolgreich erstellt.",
+          "400": "Ungültige Anfragedaten.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "",
+        "extraInformation": ""
+      },
+      {
+        "method": "POST",
+        "path": "/api/login/",
+        "description": "Authentifiziert einen Benutzer und liefert ein Authentifizierungs-Token zurück, das für weitere API-Anfragen genutzt wird.",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "",
+        "requestBody": {
+          "username": "exampleUsername",
+          "password": "examplePassword"
+        },
+        "responseDescr": "Erfolgreiche Authentifizierung gibt ein Token sowie Benutzerinformationen zurück.",
+        "response": {
+          "token": "83bf098723b08f7b23429u0fv8274",
+          "username": "exampleUsername",
+          "email": "example@mail.de",
+          "user_id": 123
+        },
+        "statusCodes": {
+          "200": "Erfolgreiche Anmeldung.",
+          "400": "Ungültige Anfragedaten.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "",
+        "extraInformation": ""
+      }
+    ]
+  },
+  {
+    "title": "Profile",
+    "description": "Alles an CRUD das für das Frontend eine Rolle spielt",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/profile/{pk}/",
+        "description": "Ruft die detaillierten Informationen eines Benutzerprofils ab (sowohl für Kunden- als auch für Geschäftsnutzer). Ermöglicht auch das Bearbeiten der Profildaten (PATCH).",
+        "urlParameters": [
+          {
+            "name": "pk",
+            "description": "Die ID des Benutzers, dessen Profil abgerufen oder bearbeitet wird.",
+            "required": true
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält die vollständigen Profildaten eines spezifischen Benutzers. Die Felder first_name, last_name, location, tel, description und working_hours dürfen im Response nicht null sein, sondern müssen, falls keine Werte vorhanden sind, mit einem leeren String ('' '') belegt werden.",
+        "response": {
+          "user": 1,
+          "username": "max_mustermann",
+          "first_name": "Max",
+          "last_name": "Mustermann",
+          "file": "profile_picture.jpg",
+          "location": "Berlin",
+          "tel": "123456789",
+          "description": "Business description",
+          "working_hours": "9-17",
+          "type": "business",
+          "email": "max@business.de",
+          "created_at": "2023-01-01T12:00:00Z"
+        },
+        "statusCodes": {
+          "200": "Die Profildaten wurden erfolgreich abgerufen.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "404": "Das Benutzerprofil wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": ""
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/profile/{pk}/",
+        "description": "Ermöglicht es einem Benutzer, bestimmte Profilinformationen zu aktualisieren.",
+        "urlParameters": [
+          {
+            "name": "pk",
+            "description": "Die ID des Benutzers, dessen Profil bearbeitet wird.",
+            "required": true
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Im Anfrage-Body können bestimmte Profilinformationen aktualisiert werden. Nicht alle Felder sind erforderlich.",
+        "requestBody": {
+          "first_name": "Max",
+          "last_name": "Mustermann",
+          "location": "Berlin",
+          "tel": "987654321",
+          "description": "Updated business description",
+          "working_hours": "10-18",
+          "email": "new_email@business.de"
+        },
+        "responseDescr": "Die Antwort enthält das aktualisierte Profil des Benutzers. Die Felder first_name, last_name, location, tel, description und working_hours dürfen im Response nicht null sein, sondern müssen, falls keine Werte vorhanden sind, mit einem leeren String ('' '') belegt werden.",
+        "response": {
+          "user": 1,
+          "username": "max_mustermann",
+          "first_name": "Max",
+          "last_name": "Mustermann",
+          "file": "profile_picture.jpg",
+          "location": "Berlin",
+          "tel": "987654321",
+          "description": "Updated business description",
+          "working_hours": "10-18",
+          "type": "business",
+          "email": "new_email@business.de",
+          "created_at": "2023-01-01T12:00:00Z"
+        },
+        "statusCodes": {
+          "200": "Das Profil wurde erfolgreich aktualisiert.",
+          "401": "Benutzer ist nicht authentifiziert",
+          "403": "Authentifizierter Benutzer ist nicht der Eigentümer Profils",
+          "404": "Das Benutzerprofil wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer kann NUR sein eigenes Profil bearbeiten.",
+        "extraInformation": ""
+      },
+      {
+        "method": "GET",
+        "path": "/api/profiles/business/",
+        "description": "Gibt eine Liste aller Geschäftsnutzer auf der Plattform zurück.",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält eine Liste aller Geschäftsnutzer mit ihren Profilinformationen. Die Felder first_name, last_name, location, tel, description und working_hours dürfen im Response nicht null sein, sondern müssen, falls keine Werte vorhanden sind, mit einem leeren String ('' '') belegt werden.",
+        "response": [
+          {
+            "user": 1,
+            "username": "max_business",
+            "first_name": "Max",
+            "last_name": "Mustermann",
+            "file": "profile_picture.jpg",
+            "location": "Berlin",
+            "tel": "123456789",
+            "description": "Business description",
+            "working_hours": "9-17",
+            "type": "business"
+          }
+        ],
+        "statusCodes": {
+          "200": "Erfolgreiche Antwort mit der Liste der Geschäftsnutzer.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": ""
+      },
+      {
+        "method": "GET",
+        "path": "/api/profiles/customer/",
+        "description": "Gibt eine Liste aller Kundenprofile auf der Plattform zurück.",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält eine Liste aller Kunden mit ihren Profilinformationen. Die Felder first_name, last_name, location, tel, description und working_hours dürfen im Response nicht null sein, sondern müssen, falls keine Werte vorhanden sind, mit einem leeren String ('' '') belegt werden.",
+        "response": [
+          {
+            "user": 2,
+            "username": "customer_jane",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "file": "profile_picture_customer.jpg",
+            "uploaded_at": "2023-09-15T09:00:00",
+            "type": "customer"
+          }
+        ],
+        "statusCodes": {
+          "200": "Erfolgreiche Antwort mit der Liste der Kundenprofile.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": ""
+      }
+    ]
+  },
+  {
+    "title": "Angebote (offers)",
+    "description": "Alles an CRUD das für das Frontend eine Rolle spielt",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/offers/",
+        "description": "Dieser Endpunkt gibt eine Liste von Angeboten zurück. Jedes Angebot enthält eine Übersicht der Angebotsdetails, den minimalen Preis und die kürzeste Lieferzeit.",
+        "urlParameters": [],
+        "queryParameters": [
+          {
+            "name": "creator_id",
+            "type": "integer",
+            "description": "Filtert die Angebote nach dem Benutzer, der sie erstellt hat."
+          },
+          {
+            "name": "min_price",
+            "type": "float",
+            "description": "Filtert Angebote mit einem Mindestpreis."
+          },
+          {
+            "name": "max_delivery_time",
+            "type": "integer",
+            "description": "Filtert Angebote, deren Lieferzeit kürzer oder gleich dem angegebenen Wert ist."
+          },
+          {
+            "name": "ordering",
+            "type": "string",
+            "description": "Sortiert die Angebote nach den Feldern 'updated_at' oder 'min_price'."
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "description": "Durchsucht die Felder 'title' und 'description' nach Übereinstimmungen."
+          },
+          {
+            "name": "page_size",
+            "type": "integer",
+            "description": "Gibt an, wie viele Ergebnisse pro Seite zurückgegeben werden sollen. Dies sollte mit dem Frontend abgestimmt sein."
+          }
+        ],
+        "requestDescr": "Es ist keine Anfrage mit einem Body erforderlich.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort ist eine paginierte Liste von Angeboten mit den zugehörigen Details.",
+        "response": {
+          "count": 1,
+          "next": "http://127.0.0.1:8000/api/offers/?page=2",
+          "previous": null,
+          "results": [
+            {
+              "id": 1,
+              "user": 1,
+              "title": "Website Design",
+              "image": null,
+              "description": "Professionelles Website-Design...",
+              "created_at": "2024-09-25T10:00:00Z",
+              "updated_at": "2024-09-28T12:00:00Z",
+              "details": [
+                {
+                  "id": 1,
+                  "url": "/offerdetails/1/"
+                },
+                {
+                  "id": 2,
+                  "url": "/offerdetails/2/"
+                },
+                {
+                  "id": 3,
+                  "url": "/offerdetails/3/"
+                }
+              ],
+              "min_price": 100.0,
+              "min_delivery_time": 7,
+              "user_details": {
+                "first_name": "John",
+                "last_name": "Doe",
+                "username": "jdoe"
+              }
+            }
+          ]
+        },
+        "statusCodes": {
+          "200": "Die Anfrage war erfolgreich und eine Liste von Angeboten wurde zurückgegeben.",
+          "400": "Ungültige Anfrageparameter.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "",
+        "extraInformation": "Die Antwort verwendet PageNumberPagination."
+      },
+      {
+        "method": "POST",
+        "path": "/api/offers/",
+        "description": "Dieser Endpunkt ermöglicht es, ein neues Angebot (Offer) zu erstellen. Ein Offer muss 3 Details enthalten!",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "Beim Erstellen eines Angebots müssen genau drei Details angegeben werden, jeweils mit dem Typ basic, standard und premium. 'revisions' sind Integer, wobei -1 für unendlich steht. 'delivery_time_in_days' muss ein positiver Integer sein. 'price' kann entweder ein Float oder ein String sein, welcher einen Float darstellt.",
+        "requestBody": {
+          "title": "Grafikdesign-Paket",
+          "image": null,
+          "description": "Ein umfassendes Grafikdesign-Paket für Unternehmen.",
+          "details": [
+            {
+              "title": "Basic Design",
+              "revisions": 2,
+              "delivery_time_in_days": 5,
+              "price": 100.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte"
+              ],
+              "offer_type": "basic"
+            },
+            {
+              "title": "Standard Design",
+              "revisions": 5,
+              "delivery_time_in_days": 7,
+              "price": 200.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte",
+                "Briefpapier"
+              ],
+              "offer_type": "standard"
+            },
+            {
+              "title": "Premium Design",
+              "revisions": 10,
+              "delivery_time_in_days": 10,
+              "price": 500.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte",
+                "Briefpapier",
+                "Flyer"
+              ],
+              "offer_type": "premium"
+            }
+          ]
+        },
+        "responseDescr": "Bei erfolgreicher Erstellung wird das Angebot mit den zugehörigen Details zurückgegeben, einschließlich IDs für das Angebot und jedes Detail.",
+        "response": {
+          "id": 1,
+          "title": "Grafikdesign-Paket",
+          "image": null,
+          "description": "Ein umfassendes Grafikdesign-Paket für Unternehmen.",
+          "details": [
+            {
+              "id": 1,
+              "title": "Basic Design",
+              "revisions": 2,
+              "delivery_time_in_days": 5,
+              "price": 100.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte"
+              ],
+              "offer_type": "basic"
+            },
+            {
+              "id": 2,
+              "title": "Standard Design",
+              "revisions": 5,
+              "delivery_time_in_days": 7,
+              "price": 200.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte",
+                "Briefpapier"
+              ],
+              "offer_type": "standard"
+            },
+            {
+              "id": 3,
+              "title": "Premium Design",
+              "revisions": 10,
+              "delivery_time_in_days": 10,
+              "price": 500.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte",
+                "Briefpapier",
+                "Flyer"
+              ],
+              "offer_type": "premium"
+            }
+          ]
+        },
+        "statusCodes": {
+          "201": "Das Angebot wurde erfolgreich erstellt.",
+          "400": "Ungültige Anfragedaten oder unvollständige Details.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "403": "Authentifizierter Benutzer ist kein 'business' Profil",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Nur User vom type 'business' dürfen Angebote erstellen",
+        "extraInformation": ""
+      },
+      {
+        "method": "GET",
+        "path": "/api/offers/{id}/",
+        "description": "Dieser Endpunkt gibt die Details eines spezifischen Angebots anhand der angegebenen ID zurück.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die ID des gewünschten Angebots."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es ist keine Anfrage mit einem Body erforderlich.",
+        "requestBody": null,
+        "responseDescr": "Gibt die Details eines spezifischen Angebots, Angebotsdetails und Metadaten zurück. 'user' ist hier die ID des User der dieses Angebot erstellt hat.",
+        "response": {
+          "id": 66,
+          "user": 114,
+          "title": "Grafikdesign-Paket",
+          "image": null,
+          "description": "Ein umfassendes Grafikdesign-Paket für Unternehmen.",
+          "created_at": "2025-01-23T07:44:15.365773Z",
+          "updated_at": "2025-01-23T07:44:15.365773Z",
+          "details": [
+            {
+              "id": 199,
+              "url": "http://127.0.0.1:8000/api/offerdetails/199/"
+            },
+            {
+              "id": 200,
+              "url": "http://127.0.0.1:8000/api/offerdetails/200/"
+            },
+            {
+              "id": 201,
+              "url": "http://127.0.0.1:8000/api/offerdetails/201/"
+            }
+          ],
+          "min_price": 50.0,
+          "min_delivery_time": 5
+        },
+        "statusCodes": {
+          "200": "Die Anfrage war erfolgreich, die Angebotsdetails wurden zurückgegeben.",
+          "401": "Benutzer ist nicht authentifiziert",
+          "404": "Das Angebot mit der angegebenen ID wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein",
+        "extraInformation": "Die Angebotsdetails enthalten die URLs zu den einzelnen Angebotsdetail-Objekten."
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/offers/{id}/",
+        "description": "Aktualisiert ein spezifisches Angebot. Ein PATCH überschreibt nur die angegebenen Felder. Es müssen nicht alle Felder angegeben werden, nur die, die aktualisiert werden sollen.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die ID des zu aktualisierenden Angebots."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Die Anfrage kann jedes Feld enthalten, das aktualisiert werden soll. Felder, die nicht angegeben werden, bleiben unverändert. Wenn ein Detail verändert werden soll, wird immer der type mitgegeben zur Identifizierung.",
+        "requestBody": {
+          "title": "Updated Grafikdesign-Paket",
+          "details": [
+            {
+              "title": "Basic Design Updated",
+              "revisions": 3,
+              "delivery_time_in_days": 6,
+              "price": 120.0,
+              "features": [
+                "Logo Design",
+                "Flyer"
+              ],
+              "offer_type": "basic"
+            }
+          ]
+        },
+        "responseDescr": "Gibt das aktualisierte Angebot mit allen Feldern zurück, unabhängig davon, welche Felder in der Anfrage angegeben wurden.",
+        "response": {
+          "id": 66,
+          "title": "Updated Grafikdesign-Paket",
+          "image": null,
+          "description": "Ein umfassendes Grafikdesign-Paket für Unternehmen.",
+          "details": [
+            {
+              "id": 199,
+              "title": "Basic Design Updated",
+              "revisions": 3,
+              "delivery_time_in_days": 6,
+              "price": 120.0,
+              "features": [
+                "Logo Design",
+                "Flyer"
+              ],
+              "offer_type": "basic"
+            },
+            {
+              "id": 200,
+              "title": "Standard Design",
+              "revisions": 5,
+              "delivery_time_in_days": 10,
+              "price": 120.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte",
+                "Briefpapier"
+              ],
+              "offer_type": "standard"
+            },
+            {
+              "id": 201,
+              "title": "Premium Design",
+              "revisions": 10,
+              "delivery_time_in_days": 10,
+              "price": 150.0,
+              "features": [
+                "Logo Design",
+                "Visitenkarte",
+                "Briefpapier",
+                "Flyer"
+              ],
+              "offer_type": "premium"
+            }
+          ]
+        },
+        "statusCodes": {
+          "200": "Das Angebot wurde erfolgreich aktualisiert.",
+          "400": "Ungültige Anfragedaten oder unvollständige Details.",
+          "401": "Benutzer ist nicht authentifiziert",
+          "403": "Authentifizierter Benutzer ist nicht der Eigentümer des Angebots",
+          "404": "Das Angebot mit der angegebenen ID wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Nur Ersteller des Angebotes können dies verändern.",
+        "extraInformation": "Nur die angegebenen Felder werden aktualisiert. Alle nicht angegebenen Felder bleiben unverändert. Details können einzeln aktualisiert werden, wobei ihre IDs unverändert bleiben müssen. Desweiteren sollte der Typ (offer_type) immer mitgegeben werden, um das Detail eindeutig zu identifizieren."
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/offers/{id}/",
+        "description": "Löscht ein spezifisches Angebot anhand der angegebenen ID.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die ID des zu löschenden Angebots."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es ist keine Anfrage mit einem Body erforderlich.",
+        "requestBody": null,
+        "responseDescr": "Bei Erfolg wird ein HTTP-Statuscode 204 No Content zurückgegeben, ohne Inhalt in der Antwort.",
+        "response": null,
+        "statusCodes": {
+          "204": "Das Angebot wurde erfolgreich gelöscht.",
+          "401": "Benutzer ist nicht authentifiziert",
+          "403": "Authentifizierter Benutzer ist nicht der Eigentümer des Angebots",
+          "404": "Das Angebot mit der angegebenen ID wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Nur Ersteller des Angebotes können dies löschen.",
+        "extraInformation": "Dieser Endpunkt gibt im Erfolgsfall keinen Antwortinhalt zurück, sondern nur den HTTP-Statuscode 204."
+      },
+      {
+        "method": "GET",
+        "path": "/api/offerdetails/{id}/",
+        "description": "Ruft die Details eines spezifischen Angebotsdetails ab.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die ID des Angebotsdetails, das abgerufen werden soll."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Gibt die vollständigen Details des Angebotsdetails zurück, einschließlich Titel, Preis, Lieferzeit, Features und Angebotstyp.",
+        "response": {
+          "id": 1,
+          "title": "Basic Design",
+          "revisions": 2,
+          "delivery_time_in_days": 5,
+          "price": 100.0,
+          "features": [
+            "Logo Design",
+            "Visitenkarte"
+          ],
+          "offer_type": "basic"
+        },
+        "statusCodes": {
+          "200": "Das Angebotsdetail wurde erfolgreich abgerufen.",
+          "401": "Benutzer ist nicht authentifiziert",
+          "404": "Das Angebotsdetail mit der angegebenen ID wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": ""
+      }
+    ]
+  },
+  {
+    "title": "Bestellungen (orders)",
+    "description": "Alles an CRUD das für das Frontend eine Rolle spielt",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/orders/",
+        "description": "Gibt eine Liste der Bestellungen zurück, die entweder vom angemeldeten Benutzer als Kunde oder als Geschäftspartner erstellt wurden.",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Eine Liste von Bestellungen, einschließlich Details wie Kunde, Geschäftspartner, Titel, Status und Erstellungsdatum.",
+        "response": [
+          {
+            "id": 1,
+            "customer_user": 1,
+            "business_user": 2,
+            "title": "Logo Design",
+            "revisions": 3,
+            "delivery_time_in_days": 5,
+            "price": 150.0,
+            "features": [
+              "Logo Design",
+              "Visitenkarten"
+            ],
+            "offer_type": "basic",
+            "status": "in_progress",
+            "created_at": "2024-09-29T10:00:00Z",
+            "updated_at": "2024-09-30T12:00:00Z"
+          }
+        ],
+        "statusCodes": {
+          "200": "Die Liste der Bestellungen wurde erfolgreich abgerufen.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": "Dieser Endpunkt gibt nur Bestellungen zurück, die mit dem angemeldeten Benutzer entweder als Kunde oder als Geschäftspartner verbunden sind."
+      },
+      {
+        "method": "POST",
+        "path": "/api/orders/",
+        "description": "Erstellt eine neue Bestellung basierend auf den Details eines Angebots (OfferDetail).",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "Die Anfrage muss die ID eines Angebotsdetails enthalten, auf dem die Bestellung basieren soll.",
+        "requestBody": {
+          "offer_detail_id": 1
+        },
+        "responseDescr": "Die erstellte Bestellung wird zurückgegeben, einschließlich Details wie ID, Kunde, Geschäftspartner, Titel, Preis und Status.",
+        "response": {
+          "id": 1,
+          "customer_user": 1,
+          "business_user": 2,
+          "title": "Logo Design",
+          "revisions": 3,
+          "delivery_time_in_days": 5,
+          "price": 150.0,
+          "features": [
+            "Logo Design",
+            "Visitenkarten"
+          ],
+          "offer_type": "basic",
+          "status": "in_progress",
+          "created_at": "2024-09-29T10:00:00Z",
+          "updated_at": "2024-09-30T12:00:00Z"
+        },
+        "statusCodes": {
+          "201": "Die Bestellung wurde erfolgreich erstellt.",
+          "400": "Ungültige Anfragedaten (z. B. wenn 'offer_detail_id' fehlt oder ungültig ist).",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "403": "Benutzer hat keine Berechtigung, z.B. weil nicht vom typ 'customer'.",
+          "404": "Das angegebene Angebotsdetail wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein und vom typ 'customer' sein.",
+        "extraInformation": "Nur Benutzer vom typ 'customer' können Bestellungen erstellen. Der Benutzer gibt eine OfferDetail ID an, und die Bestellung wird auf Grundlage dieses Angebots erstellt. Beachte, dass das Angebot sowohl den Anbieter als auch den Kunden beinhalten muss. Diese Informationen können aus der Authentifizierung und der Offer entnommen werden."
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/orders/{id}/",
+        "description": "Aktualisiert den Status einer spezifischen Bestellung. Mögliche Statuswerte sind z.B. 'in_progress', 'completed', oder 'cancelled'.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die eindeutige ID der Bestellung, die aktualisiert werden soll."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Nur der Status der Bestellung wird aktualisiert. Andere Felder bleiben unverändert.",
+        "requestBody": {
+          "status": "completed"
+        },
+        "responseDescr": "Die aktualisierten Details der Bestellung werden zurückgegeben, einschließlich des neuen Status und aktualisierter Timestamps.",
+        "response": {
+          "id": 1,
+          "customer_user": 1,
+          "business_user": 2,
+          "title": "Logo Design",
+          "revisions": 3,
+          "delivery_time_in_days": 5,
+          "price": 150.0,
+          "features": [
+            "Logo Design",
+            "Visitenkarten"
+          ],
+          "offer_type": "basic",
+          "status": "completed",
+          "created_at": "2024-09-29T10:00:00Z",
+          "updated_at": "2024-09-30T15:00:00Z"
+        },
+        "statusCodes": {
+          "200": "Der Status der Bestellung wurde erfolgreich aktualisiert.",
+          "400": "Ungültiger Status oder unzulässige Felder in der Anfrage.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "403": "Benutzer hat keine Berechtigung, diese Bestellung zu aktualisieren.",
+          "404": "Die angegebene Bestellung wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Nur ein Benutzer vom typ 'business' kann den Status einer Bestellung aktualisieren.",
+        "extraInformation": ""
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/orders/{id}/",
+        "description": "Löscht eine spezifische Bestellung. Diese Aktion ist auf Admin-Benutzer (Staff) beschränkt.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die eindeutige ID der zu löschenden Bestellung."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält keinen Inhalt und zeigt an, dass die Bestellung erfolgreich gelöscht wurde.",
+        "response": null,
+        "statusCodes": {
+          "204": "Die Bestellung wurde erfolgreich gelöscht. Keine weiteren Inhalte in der Antwort.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "403": "Benutzer hat keine Berechtigung, die Bestellung zu löschen.",
+          "404": "Die angegebene Bestellung wurde nicht gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Nur Admin-Benutzer (Staff) dürfen Bestellungen löschen.",
+        "extraInformation": ""
+      },
+      {
+        "method": "GET",
+        "path": "/api/order-count/{business_user_id}/",
+        "description": "Dieser Endpunkt gibt die Anzahl der laufenden Bestellungen eines bestimmten Geschäftsnutzers (Business User) zurück. Laufende Bestellungen sind solche mit dem Status 'in_progress'.",
+        "urlParameters": [
+          {
+            "name": "business_user_id",
+            "type": "integer",
+            "description": "Die eindeutige ID des Geschäftsnutzers, dessen laufende Bestellungen gezählt werden sollen."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält die Anzahl der laufenden Bestellungen für den angegebenen Geschäftsnutzer.",
+        "response": {
+          "order_count": 5
+        },
+        "statusCodes": {
+          "200": "Die Anzahl der laufenden Bestellungen wurde erfolgreich abgerufen.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "404": "Kein Geschäftsnutzer mit der angegebenen ID gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": ""
+      },
+      {
+        "method": "GET",
+        "path": "/api/completed-order-count/{business_user_id}/",
+        "description": "Gibt die Anzahl der abgeschlossenen Bestellungen eines bestimmten Geschäftsnutzers zurück. Abgeschlossene Bestellungen haben den Status 'completed'.",
+        "urlParameters": [
+          {
+            "name": "business_user_id",
+            "type": "integer",
+            "description": "Die eindeutige ID des Geschäftsnutzers, dessen abgeschlossene Bestellungen gezählt werden sollen."
+          }
+        ],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält die Anzahl der abgeschlossenen Bestellungen für den angegebenen Geschäftsnutzer.",
+        "response": {
+          "completed_order_count": 10
+        },
+        "statusCodes": {
+          "200": "Die Anzahl der abgeschlossenen Bestellungen wurde erfolgreich abgerufen.",
+          "401": "Benutzer ist nicht authentifiziert.",
+          "404": "Kein Geschäftsnutzer mit der angegebenen ID gefunden.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "Der Benutzer muss authentifiziert sein.",
+        "extraInformation": ""
+      }
+    ]
+  },
+  {
+    "title": "Bewertungen (reviews)",
+    "description": "Alles an CRUD das für das Frontend eine Rolle spielt",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/reviews/",
+        "description": "Listet alle verfügbaren Bewertungen auf. Die Bewertungen können nach 'updated_at' oder 'rating' geordnet werden. Es können auch Filter-Parameter wie 'business_user_id' und 'reviewer_id' verwendet werden.",
+        "urlParameters": [],
+        "queryParameters": [
+          {
+            "name": "business_user_id",
+            "type": "integer",
+            "description": "Die ID des Geschäftsbenutzers, für den Bewertungen gefiltert werden sollen."
+          },
+          {
+            "name": "reviewer_id",
+            "type": "integer",
+            "description": "Die ID des Benutzers, der die Bewertungen erstellt hat."
+          },
+          {
+            "name": "ordering",
+            "type": "string",
+            "description": "Die Sortierreihenfolge der Bewertungen. Mögliche Werte: 'updated_at' oder 'rating'."
+          }
+        ],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält eine Liste aller Bewertungen, die gefiltert und geordnet werden können.",
+        "response": [
+          {
+            "id": 1,
+            "business_user": 2,
+            "reviewer": 3,
+            "rating": 4,
+            "description": "Sehr professioneller Service.",
+            "created_at": "2023-10-30T10:00:00Z",
+            "updated_at": "2023-10-31T10:00:00Z"
+          },
+          {
+            "id": 2,
+            "business_user": 5,
+            "reviewer": 3,
+            "rating": 5,
+            "description": "Top Qualität und schnelle Lieferung!",
+            "created_at": "2023-09-20T10:00:00Z",
+            "updated_at": "2023-09-20T12:00:00Z"
+          }
+        ],
+        "statusCodes": {
+          "200": "Erfolgreiche Antwort mit der Liste der Bewertungen.",
+          "401": "Unauthorized. Der Benutzer muss authentifiziert sein.",
+          "500": "Interner Serverfehler."
+        },
+        "permissions": "Jeder authentifizierte Benutzer kann Bewertungen lesen.",
+        "extraInformation": ""
+      },
+      {
+        "method": "POST",
+        "path": "/api/reviews/",
+        "description": "Erstellt eine neue Bewertung für einen Geschäftsbenutzer. Nur authentifizierte Benutzer mit einem Kundenprofil dürfen Bewertungen erstellen. Ein Benutzer kann pro Geschäftsprofil nur eine Bewertung abgeben.",
+        "urlParameters": [],
+        "requestDescr": "Der Anfrage-Body muss die Bewertung und Beschreibung enthalten, außerdem die ID des Geschäftsbenutzers.",
+        "requestBody": {
+          "business_user": 2,
+          "rating": 4,
+          "description": "Alles war toll!"
+        },
+        "responseDescr": "Erfolgreiche Antwort, die die Details der neu erstellten Bewertung zurückgibt.",
+        "response": {
+          "id": 3,
+          "business_user": 2,
+          "reviewer": 3,
+          "rating": 4,
+          "description": "Alles war toll!",
+          "created_at": "2023-10-30T15:30:00Z",
+          "updated_at": "2023-10-30T15:30:00Z"
+        },
+        "statusCodes": {
+          "201": "Erfolgreich erstellt.",
+          "400": "Fehlerhafte Anfrage. Der Benutzer hat möglicherweise bereits eine Bewertung für das gleiche Geschäftsprofil abgegeben.",
+          "401": "Unauthorized. Der Benutzer muss authentifiziert sein und ein Kundenprofil besitzen.",
+          "403": "Forbidden. Ein Benutzer kann nur eine Bewertung pro Geschäftsprofil abgeben.",
+          "500": "Interner Serverfehler."
+        },
+        "permissions": "Nur authentifizierte Benutzer mit einem Kundenprofil dürfen Bewertungen erstellen. Jeder authentifizierte Benutzer kann Bewertungen lesen.",
+        "extraInformation": "Dieser Endpunkt erlaubt es Kunden, eine Bewertung für einen Geschäftsbenutzer zu hinterlassen. Eine Bewertung kann nur einmal pro Geschäftsbenutzer abgegeben werden."
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/reviews/{id}/",
+        "description": "Aktualisiert ausgewählte Felder einer bestehenden Bewertung (nur 'rating' und 'description' sind editierbar). Der Endpunkt erlaubt es dem Ersteller der Bewertung, die Bewertung zu bearbeiten.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die ID der spezifischen Bewertung, die aktualisiert werden soll."
+          }
+        ],
+        "requestDescr": "Der Anfrage-Body muss die Felder 'rating' und/oder 'description' enthalten, die aktualisiert werden sollen. Nur der Ersteller der Bewertung oder ein Admin kann diesen Endpunkt nutzen.",
+        "requestBody": {
+          "rating": 5,
+          "description": "Noch besser als erwartet!"
+        },
+        "responseDescr": "Die Antwort enthält die aktualisierten Details der Bewertung.",
+        "response": {
+          "id": 1,
+          "business_user": 2,
+          "reviewer": 3,
+          "rating": 5,
+          "description": "Noch besser als erwartet!",
+          "created_at": "2023-10-30T10:00:00Z",
+          "updated_at": "2023-11-01T08:00:00Z"
+        },
+        "statusCodes": {
+          "200": "Erfolgreich aktualisiert. Die aktualisierte Bewertung wird zurückgegeben.",
+          "400": "Bad Request. Der Anfrage-Body enthält ungültige Daten.",
+          "401": "Unauthorized. Der Benutzer muss authentifiziert sein.",
+          "403": "Forbidden. Der Benutzer ist nicht berechtigt, diese Bewertung zu bearbeiten.",
+          "404": "Nicht gefunden. Es wurde keine Bewertung mit der angegebenen ID gefunden."
+        },
+        "permissions": "Nur der Ersteller der Bewertung darf diese Aktion durchführen.",
+        "extraInformation": ""
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/reviews/{id}/",
+        "description": "Löscht eine spezifische Bewertung. Nur der Ersteller der Bewertung können diese Aktion ausführen.",
+        "urlParameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "Die ID der spezifischen Bewertung, die gelöscht werden soll."
+          }
+        ],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort bestätigt, dass die Bewertung erfolgreich gelöscht wurde.",
+        "response": null,
+        "statusCodes": {
+          "204": "Erfolgreich gelöscht. Es wird kein Inhalt zurückgegeben.",
+          "401": "Unauthorized. Der Benutzer muss authentifiziert sein.",
+          "403": "Forbidden. Der Benutzer ist nicht berechtigt, diese Bewertung zu löschen.",
+          "404": "Nicht gefunden. Es wurde keine Bewertung mit der angegebenen ID gefunden."
+        },
+        "permissions": "Nur der Ersteller der Bewertung darf diese Aktion durchführen.",
+        "extraInformation": ""
+      }
+    ]
+  },
+  {
+    "title": "Übergreifende Endpoints",
+    "description": "Alle Endpoints die übergreifende z.B. aggregierende Funktionene haben",
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/base-info/",
+        "description": "Ruft allgemeine Basisinformationen zur Plattform ab, einschließlich der Anzahl der Bewertungen, des durchschnittlichen Bewertungsergebnisses, der Anzahl der Geschäftsnutzer und der Anzahl der Angebote.",
+        "urlParameters": [],
+        "queryParameters": [],
+        "requestDescr": "Es wird kein Anfrage-Body benötigt.",
+        "requestBody": null,
+        "responseDescr": "Die Antwort enthält statistische Informationen über die Plattform.",
+        "response": {
+          "review_count": 10,
+          "average_rating": 4.6,
+          "business_profile_count": 45,
+          "offer_count": 150
+        },
+        "statusCodes": {
+          "200": "Die Basisinformationen wurden erfolgreich abgerufen.",
+          "500": "Interner Serverfehler."
+        },
+        "rateLimits": {
+          "noLimit": true,
+          "limit": 0,
+          "timeWindow": ""
+        },
+        "permissions": "",
+        "extraInformation": "Die durchschnittliche Bewertung ('average_rating') basiert auf allen abgegebenen Bewertungen und ist auf eine Dezimalstelle gerundet"
+      }
+    ]
+  }
+]

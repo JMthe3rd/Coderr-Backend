@@ -1,0 +1,53 @@
+Name                                  Stmts   Miss Branch BrPart  Cover   Missing
+---------------------------------------------------------------------------------
+auth_app/__init__.py                      0      0      0      0   100%
+auth_app/admin.py                         7      0      0      0   100%
+auth_app/api/__init__.py                  0      0      0      0   100%
+auth_app/api/permissions.py               4      0      0      0   100%
+auth_app/api/profile_serializers.py      34      0      6      0   100%
+auth_app/api/profile_views.py            22      0      0      0   100%
+auth_app/api/serializers.py              28      0      4      0   100%
+auth_app/api/urls.py                      4      0      0      0   100%
+auth_app/api/views.py                    25      0      0      0   100%
+auth_app/models.py                       17      0      0      0   100%
+auth_app/services.py                     25      0      8      0   100%
+core/__init__.py                          0      0      0      0   100%
+core/api/__init__.py                      0      0      0      0   100%
+core/api/urls.py                          3      0      0      0   100%
+core/api/views.py                         8      0      0      0   100%
+core/services.py                          7      0      0      0   100%
+core/settings.py                         23      0      0      0   100%
+core/urls.py                              7      1      2      1    78%   17
+core/wsgi.py                              4      4      0      0     0%   3-8
+offers_app/__init__.py                    0      0      0      0   100%
+offers_app/admin.py                      15      0      0      0   100%
+offers_app/api/__init__.py                0      0      0      0   100%
+offers_app/api/filters.py                14      0      0      0   100%
+offers_app/api/pagination.py              5      0      0      0   100%
+offers_app/api/permissions.py            13      0      6      0   100%
+offers_app/api/serializers.py            76      2     20      2    96%   65, 67
+offers_app/api/urls.py                    6      0      0      0   100%
+offers_app/api/views.py                  36      0      6      0   100%
+offers_app/models.py                     31      0      0      0   100%
+offers_app/services.py                   25      0     10      0   100%
+orders_app/__init__.py                    0      0      0      0   100%
+orders_app/admin.py                      10      0      0      0   100%
+orders_app/api/__init__.py                0      0      0      0   100%
+orders_app/api/permissions.py            14      0      6      0   100%
+orders_app/api/serializers.py            21      0      2      0   100%
+orders_app/api/urls.py                    6      0      0      0   100%
+orders_app/api/views.py                  39      0      2      0   100%
+orders_app/models.py                     25      0      0      0   100%
+orders_app/services.py                   11      0      0      0   100%
+reviews_app/__init__.py                   0      0      0      0   100%
+reviews_app/admin.py                      8      0      0      0   100%
+reviews_app/api/__init__.py               0      0      0      0   100%
+reviews_app/api/filters.py               10      0      0      0   100%
+reviews_app/api/permissions.py            9      0      2      0   100%
+reviews_app/api/serializers.py           19      0      2      0   100%
+reviews_app/api/urls.py                   5      0      0      0   100%
+reviews_app/api/views.py                 27      0      4      0   100%
+reviews_app/models.py                    15      0      0      0   100%
+reviews_app/services.py                  12      0      2      0   100%
+---------------------------------------------------------------------------------
+TOTAL                                   670      7     82      3    99%
