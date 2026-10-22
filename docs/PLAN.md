@@ -42,7 +42,7 @@ Retrieved: 2026-10-19. The accompanying JSON preserves request and response exam
 
 ## Decisions and documentation ambiguities
 
-- Keep Django standard User as in KanMind. Profile API identifiers refer to user IDs.
+- Use Django's standard User model for accounts. Profile API identifiers refer to user IDs.
 - Optional profile text uses empty strings rather than null.
 - Order status changes are restricted to the associated business user. The documentation only explicitly names the business role; object ownership is an additional access-control decision.
 - Review PATCH mentions admin in request text but author-only in permissions: follow author-only permissions unless clarified.
@@ -90,3 +90,9 @@ Retrieved: 2026-10-19. The accompanying JSON preserves request and response exam
 - All 23 method/route combinations are implemented. Core frontend integration,
   local coverage measurement and the local checklist audit passed. External
   course PM tests and GitHub publication remain pending; see VERIFICATION.md.
+
+## Order lookup and permission precedence
+
+Authenticated PATCH/DELETE requests look up the order first: missing orders
+return 404, and existing orders with insufficient write privileges return 403.
+Authentication still runs first, so anonymous requests return 401.

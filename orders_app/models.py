@@ -11,7 +11,7 @@ class Order(models.Model):
     """Preserve the purchased package independently of its source offer."""
 
     class Status(models.TextChoices):
-        """Documented order lifecycle states."""
+        """Order status values: in progress, completed and cancelled."""
 
         IN_PROGRESS = "in_progress", "In progress"
         COMPLETED = "completed", "Completed"

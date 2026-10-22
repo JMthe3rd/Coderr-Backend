@@ -97,15 +97,36 @@ class OrderManagementTests(OrderTestCase):
         self.assertFalse(Order.objects.filter(pk=self.order.pk).exists())
         self.assertTrue(self.offer.details.filter(pk=self.package.pk).exists())
 
-    def test_missing_resources(self):
-        """Return 404 for authorized edits or deletion of missing orders."""
+    def test_missing_orders_return_404_for_authenticated_roles(self):
+        """Look up missing orders before checking edit or delete privileges."""
+        bare = get_user_model().objects.create_user(username="missing_bare")
+        staff = get_user_model().objects.create_user(
+            username="missing_staff", is_staff=True
+        )
         self.url = "/api/orders/99999/"
-        self.assertEqual(self.patch_status("completed").status_code, 404)
-        self.owner.is_staff = True
-        self.owner.save()
-        self.assertEqual(self.client.delete(self.url).status_code, 404)
+        for user in [self.customer, self.owner, self.other, bare, staff]:
+            self.client.force_authenticate(user)
+            self.assertEqual(self.patch_status("completed").status_code, 404)
+            self.assertEqual(self.client.delete(self.url).status_code, 404)
+
+    def test_missing_orders_still_require_authentication(self):
+        """Return 401 for anonymous writes even when the order is missing."""
+        self.url = "/api/orders/99999/"
+        self.client.force_authenticate(None)
+        self.assertEqual(self.patch_status("completed").status_code, 401)
+        self.assertEqual(self.client.delete(self.url).status_code, 401)
+
+    def test_business_participant_requires_business_profile(self):
+        """Deny status edits if the provider no longer has a business role."""
+        profile = self.owner.profile
+        profile.type = "customer"
+        profile.save()
+        self.assert_status_denied(403)
+        profile.delete()
+        self.owner.refresh_from_db()
+        self.assert_status_denied(403)
 
     def test_unsupported_methods(self):
-        """Do not expose undocumented order retrieval or full replacement."""
+        """Return 405 for single-order GET requests and PUT replacement."""
         self.assertEqual(self.client.get(self.url).status_code, 405)
         self.assertEqual(self.client.put(self.url, {}).status_code, 405)

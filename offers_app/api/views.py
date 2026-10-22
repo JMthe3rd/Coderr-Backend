@@ -20,7 +20,7 @@ from .serializers import (
 
 
 class OfferViewSet(ModelViewSet):
-    """Expose only the documented offer methods and response shapes."""
+    """List service offers and let business users manage their own offers."""
 
     queryset = (
         Offer.objects.select_related("user")

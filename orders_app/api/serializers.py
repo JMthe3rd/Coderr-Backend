@@ -14,7 +14,7 @@ class OrderSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        """Declare the full documented order response."""
+        """Return purchase terms, participants, status and timestamps."""
 
         model = Order
         fields = [

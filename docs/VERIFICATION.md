@@ -1,11 +1,12 @@
 # Local verification report
 
-Date: 19 October 2026 (Europe/Vienna).
+Browser verification: 19 October 2026 (Europe/Vienna).
+Mentor-feedback fixes and automated recheck: 21 October 2026.
 
 ## Result and limits
 
 All 23 documented method/route combinations are implemented. The local suite
-passes 97 tests. Core workflows were exercised through the unmodified course
+passes 99 tests. Core workflows were exercised through the unmodified course
 frontend. This is a local development verification, not confirmation of the
 external course PM tests or a production deployment review.
 
@@ -18,10 +19,10 @@ Its working tree was unchanged after testing. Local URLs were
 
 | Check | Result |
 | --- | --- |
-| Django tests | 97 passed |
-| Combined statement and branch coverage | 98.67%, displayed as 99% |
-| Statement coverage | 663 / 670 = 98.96% |
-| Branch coverage | 79 / 82 = 96.34% |
+| Django tests | 99 passed |
+| Combined statement and branch coverage | 98.66%, displayed as 99% |
+| Statement coverage | 661 / 668 = 98.95% |
+| Branch coverage | 77 / 80 = 96.25% |
 | Django system check | No issues |
 | Migration consistency | No model changes missing migrations |
 | Database setup | Migrations applied locally; test database built from migrations |
@@ -79,6 +80,19 @@ filter/sort/page variants, deletion, malformed inputs, foreign-account writes,
 role permissions, duplicate reviews, transaction rollback and purchase snapshots
 surviving offer edits/deletion. It does not establish every possible browser,
 concurrency, or production configuration outcome.
+
+## Mentor feedback corrections
+
+- Removed the unrelated project reference from README and the implementation plan.
+- Reviewed Python docstrings and replaced vague references to undocumented routes
+  or unspecified response contracts with concrete Coderr behavior.
+- Order PATCH/DELETE now resolve the requested order before checking its write
+  permissions. Authenticated requests for a missing order return 404 across
+  customer, business, staff and profile-less accounts. Existing orders still
+  enforce provider/business status-editing and staff-only deletion with 403.
+  Anonymous writes still return 401. Single-order GET remains unsupported (405).
+- Regression tests cover missing orders, anonymous requests, existing foreign
+  orders, and providers whose business profile was changed or removed.
 
 ## Course checklist audit
 

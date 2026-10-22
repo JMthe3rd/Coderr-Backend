@@ -13,5 +13,5 @@ class BaseInfoView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        """Return the documented four platform-wide statistics."""
+        """Return review count/mean, business profile count and offer count."""
         return Response(get_base_info())

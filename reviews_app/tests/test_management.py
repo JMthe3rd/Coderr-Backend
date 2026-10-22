@@ -77,7 +77,7 @@ class ReviewManagementTests(ReviewTestCase):
         self.assertEqual(self.post_review().status_code, 201)
 
     def test_missing_resource_and_unsupported_methods(self):
-        """Return 404 for missing writes and 405 for undocumented actions."""
+        """Return 404 for missing reviews and 405 for single GET or PUT."""
         self.assertEqual(self.client.get(self.url).status_code, 405)
         self.assertEqual(self.client.put(self.url, {}).status_code, 405)
         self.url = "/api/reviews/99999/"

@@ -10,7 +10,7 @@ from .serializers import LoginSerializer, RegistrationSerializer
 
 
 def account_response(user):
-    """Return the documented token and account response fields."""
+    """Return the login token, username, email and user ID."""
     token, _ = Token.objects.get_or_create(user=user)
     return {
         "token": token.key,

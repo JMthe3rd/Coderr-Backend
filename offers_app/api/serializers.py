@@ -39,7 +39,7 @@ class OfferWriteSerializer(serializers.ModelSerializer):
     details = OfferDetailSerializer(many=True)
 
     class Meta:
-        """Use the documented creation and update response fields."""
+        """Return offer content with the complete package data after saving."""
 
         model = Offer
         fields = ["id", "title", "image", "description", "details"]

@@ -19,7 +19,7 @@ class ReviewViewSet(
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
-    """Expose list, create, PATCH and DELETE without undocumented retrieval."""
+    """List customer reviews and let their authors edit or delete them."""
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer

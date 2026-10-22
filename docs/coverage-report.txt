@@ -33,7 +33,7 @@ offers_app/services.py                   25      0     10      0   100%
 orders_app/__init__.py                    0      0      0      0   100%
 orders_app/admin.py                      10      0      0      0   100%
 orders_app/api/__init__.py                0      0      0      0   100%
-orders_app/api/permissions.py            14      0      6      0   100%
+orders_app/api/permissions.py            12      0      4      0   100%
 orders_app/api/serializers.py            21      0      2      0   100%
 orders_app/api/urls.py                    6      0      0      0   100%
 orders_app/api/views.py                  39      0      2      0   100%
@@ -50,4 +50,4 @@ reviews_app/api/views.py                 27      0      4      0   100%
 reviews_app/models.py                    15      0      0      0   100%
 reviews_app/services.py                  12      0      2      0   100%
 ---------------------------------------------------------------------------------
-TOTAL                                   670      7     82      3    99%
+TOTAL                                   668      7     80      3    99%

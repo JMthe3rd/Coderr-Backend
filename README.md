@@ -131,7 +131,11 @@ The unpaginated order list includes only purchases involving the authenticated
 user, including for staff. Staff may delete unrelated orders but do not gain
 a global list or status-editing rights. PATCH must contain only `status`, with
 one of `in_progress`, `completed` or `cancelled`. Other or missing fields return
-400; customers and unrelated businesses cannot update status. No extra status
+400; customers and unrelated businesses cannot update status.
+For authenticated PATCH and DELETE requests, a missing order returns 404
+before its write permissions are checked. Existing orders return 403 when the
+user lacks the required permissions; anonymous requests return 401.
+No extra status
 transition restrictions are imposed by the current course specification.
 Single-order GET and full replacement with PUT are not exposed.
 
@@ -194,8 +198,8 @@ python -m ruff check .
 python -m ruff format --check .
 ```
 
-The local suite has 97 passing tests. Combined statement/branch coverage is
-98.67% (displayed as 99% by coverage.py): 663/670 statements and 79/82 branches.
+The local suite has 99 passing tests. Combined statement/branch coverage is
+98.66% (displayed as 99% by coverage.py): 661/668 statements and 77/80 branches.
 The committed `.coveragerc` measures all five application/project packages,
 excluding tests and migrations, and requires at least 95%. HTML output is saved
 to `htmlcov/index.html` and is excluded from Git. These local results do not
@@ -205,7 +209,7 @@ confirm the course PM tests or their separate required 95% coverage.
 
 Keep the course frontend separate from this backend repository. Local CORS
 origins are `http://localhost:5500` and `http://127.0.0.1:5500`.
-KanMind also uses port 8000; stop it before starting Coderr on that port.
+Make sure port 8000 is free before starting the Coderr backend.
 The tested frontend is available separately at:
 https://github.com/Developer-Akademie-Backendkurs/project.Coderr
 

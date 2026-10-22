@@ -26,7 +26,7 @@ class OrderViewSet(
     mixins.DestroyModelMixin,
     GenericViewSet,
 ):
-    """Expose the four documented actions without a single-order GET route."""
+    """List purchases and handle order creation, status edits and deletion."""
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -45,7 +45,7 @@ class OrderViewSet(
         return queryset
 
     def get_serializer_class(self):
-        """Use input serializers appropriate to each documented action."""
+        """Validate purchase data for POST and order status for PATCH."""
         serializers = {
             "create": OrderCreateSerializer,
             "partial_update": OrderStatusSerializer,
@@ -76,7 +76,7 @@ class OrderCountView(APIView):
 
 
 class CompletedOrderCountView(OrderCountView):
-    """Count completed orders with the documented response key."""
+    """Return completed_order_count for a business account."""
 
     order_status = Order.Status.COMPLETED
     response_field = "completed_order_count"

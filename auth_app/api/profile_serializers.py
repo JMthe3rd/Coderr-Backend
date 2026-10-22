@@ -7,7 +7,7 @@ from auth_app.services import update_profile
 
 
 class BusinessProfileSerializer(serializers.ModelSerializer):
-    """Represent the documented public business profile list fields."""
+    """Return business contact details and profile information in lists."""
 
     username = serializers.CharField(source="user.username", read_only=True)
     first_name = serializers.CharField(
@@ -67,7 +67,7 @@ class ProfileSerializer(BusinessProfileSerializer):
 
 
 class CustomerProfileSerializer(serializers.ModelSerializer):
-    """Represent the compact customer list specified by the API."""
+    """Return customer names, avatars and avatar upload timestamps."""
 
     username = serializers.CharField(source="user.username", read_only=True)
     first_name = serializers.CharField(
